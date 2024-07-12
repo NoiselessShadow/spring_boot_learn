@@ -11,5 +11,8 @@ public class Book {
     private Long id;
     private String name;
     private Integer score;
+    //分类
     private String category;
+    //简介
+    private String intor;
 }
