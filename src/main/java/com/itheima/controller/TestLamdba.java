@@ -3,10 +3,9 @@ package com.itheima.controller;
 import com.itheima.bean.Author;
 import com.itheima.bean.Book;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.function.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TestLamdba {
@@ -149,20 +148,83 @@ public class TestLamdba {
 //        System.out.println("=================");
 //        //跳过前N个元素
 //        authors.stream().sorted((o1,o2)->o2.getAge()-o1.getAge()).skip(2).forEach(item -> System.out.println(item.getName()));
-        authors.stream().map(new Function<Author, List<Book>>() {
-            @Override
-            public List<Book> apply(Author author) {
-                return author.getBooks();
-            }
-        }).forEach(new Consumer<List<Book>>() {
-            @Override
-            public void accept(List<Book> list) {
-                System.out.println("集合列表");
-                System.out.println(list);
-            }
-        });
+//        authors.stream()
+//                .map(author -> author.getBooks())
+//                .forEach(list -> {
+//            System.out.println("集合列表");
+//            System.out.println(list);
+//        });
+//
+//        authors.stream()
+//                .map(author -> author.getBooks().stream())
+//                . forEach(System.out::println);
+//
+//        System.out.println("=====================");
+//
+//        authors.stream()
+//                .flatMap((Function<Author, Stream<Book>>) author -> author.getBooks().stream())
+//                .forEach(book ->System.out.println(book));
 
-        authors.stream().flatMap((Function<Author, Stream<Book>>) author -> author.getBooks().stream()).forEach(book ->System.out.println(book));
+
+//        Optional<Integer> max = authors.stream().flatMap(item -> item.getBooks().stream()).map(book -> book.getScore()).max((a, b) -> a-b);
+//        Optional<Integer> max2 = authors.stream().flatMap(item -> item.getBooks().stream()).map(book -> book.getScore()).max((a, b) -> b-a);
+//        Optional<Integer> min = authors.stream().flatMap(item -> item.getBooks().stream()).map(book -> book.getScore()).min((a, b) -> b - a);
+//        System.out.println(max.get());
+//        System.out.println(max2.get());
+//        System.out.println(min.get());
+
+//        Set<String> collect = authors.stream().flatMap(item -> item.getBooks().stream()).map(book -> book.getCategory()).collect(Collectors.toSet());
+//        System.out.println(collect);
+
+//        Map<String, List<Book>> listMap = authors.stream().collect(Collectors
+//                .toMap(new Function<Author, String>() {
+//                    @Override
+//                    public String apply(Author author) {
+//                        return author.getName();
+//                    }
+//                }, new Function<Author, List<Book>>() {
+//                    @Override
+//                    public List<Book> apply(Author author) {
+//                        return author.getBooks();
+//                    }
+//                }));
+//
+//        Map<String, List<Book>> simplifyMap = authors.stream()
+//                .collect(Collectors.toMap(author -> author.getName(), author -> author.getBooks()));
+//
+//        Set<String> keySets = simplifyMap.keySet();
+//        for (String keySet : keySets) {
+//            System.out.println(keySet+"===="+simplifyMap.get(keySet));
+//        }
+
+//        boolean anyMatch = authors.stream().anyMatch(author -> author.getAge() > 23);
+//        boolean allMatch = authors.stream().allMatch(author -> author.getAge() > 23);
+//        boolean noneMatch = authors.stream().noneMatch(author -> author.getAge() > 25);
+//        System.out.println(anyMatch);
+//        System.out.println(allMatch);
+//        System.out.println(noneMatch);
+
+//        Optional<Author> any = authors.stream().filter(author -> author.getAge()>23).findAny();
+//        any.ifPresent(author -> System.out.println(author));
+
+        Integer reduce = authors.stream()
+                .map(author -> author.getAge())
+                .reduce(0, new BinaryOperator<Integer>() {
+                    @Override
+                    public Integer apply(Integer integer, Integer integer2) {
+                        return integer + integer2;
+                    }
+                });
+
+        Integer reduceMax = authors.stream()
+                .map(author -> author.getAge())
+                .reduce(Integer.MIN_VALUE, (p1, p2) -> p1 > p2 ? p1 : p2);
+        System.out.println(reduceMax);
+
+        Optional<Integer> reduced = authors.stream()
+                .map(author -> author.getAge())
+                .reduce((p1, p2) -> p1 > p2 ? p1 : p2);
+        System.out.println(reduced.get());
 
 
     }
