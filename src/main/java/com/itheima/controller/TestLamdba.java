@@ -117,19 +117,19 @@ public class TestLamdba {
         List<Author> authors = getAuthors();
         //将对象某个属性获取出来当做单独的集合：
         //第一个属性为入参，第二个属性是泛型，用作方法的返回值
-//        authors.stream().map(new Function<Author, String>() {
-//            @Override
-//            public String apply(Author author) {
-//                return  author.getName();
-//            }
-//        }).forEach(new Consumer<String>() {
-//            @Override
-//            public void accept(String s) {
-//                System.out.println(s);
-//            }
-//        });
-//        authors.stream().map(author -> author.getName()).forEach(System.out::println);
-//        authors.stream().map(author -> author.getId()).forEach(System.out::println);
+        authors.stream().map(new Function<Author, String>() {
+            @Override
+            public String apply(Author author) {
+                return  author.getName();
+            }
+        }).forEach(new Consumer<String>() {
+            @Override
+            public void accept(String s) {
+                System.out.println(s);
+            }
+        });
+        authors.stream().map(author -> author.getName()).forEach(System.out::println);
+        authors.stream().map(author -> author.getId()).forEach(System.out::println);
 //
 //        authors.stream().sorted().forEach(author -> System.out.println(author.getName()+":"+author.getAge()));
 //        authors.stream().sorted().forEach(System.out::println);
