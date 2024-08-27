@@ -2,6 +2,7 @@ package com.itheima;
 
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -81,13 +82,40 @@ public class RotateImage {
     public static void main(String[] args) throws IOException {
         //            BufferedImage originalImage = ImageIO.read(new File("C:\\Users\\Administrator\\Pictures\\测试用图\\1.jpg"));
 
-        File inputFile = new File("C:\\Users\\Administrator\\Pictures\\测试用图\\1.jpg"); // 输入图片路径
-        BufferedImage originalImage = ImageIO.read(inputFile);
+//        File inputFile = new File("C:\\Users\\Administrator\\Pictures\\测试用图\\1.jpg"); // 输入图片路径
+//        BufferedImage originalImage = ImageIO.read(inputFile);
+//
+//        BufferedImage rotatedImage = rotateImage(originalImage, 90); // 旋转45度
+//
+//        // 将旋转后的图片保存到文件
+//        File outputFile = new File("C:\\Users\\Administrator\\Desktop\\output1.png"); // 输出图片路径
+//        ImageIO.write(rotatedImage, "PNG", outputFile);
+        filtImage();
 
-        BufferedImage rotatedImage = rotateImage(originalImage, 90); // 旋转45度
+    }
 
-        // 将旋转后的图片保存到文件
-        File outputFile = new File("C:\\Users\\Administrator\\Desktop\\output1.png"); // 输出图片路径
-        ImageIO.write(rotatedImage, "PNG", outputFile);
+
+
+    public static void filtImage(){
+        try {
+            // 读取图片
+            BufferedImage originalImage = ImageIO.read(new File("C:\\Users\\Administrator\\Pictures\\测试用图\\1.jpg"));
+
+            // 创建翻转的AffineTransform对象
+            AffineTransform transform = new AffineTransform();
+            transform.scale(1, -1); // 垂直翻转
+            transform.translate(0, -originalImage.getHeight()); // 移动图片到翻转的位置
+
+            // 创建AffineTransformOp对象
+            AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+
+            // 执行翻转操作
+            BufferedImage flippedImage = op.filter(originalImage, null);
+
+            // 保存翻转后的图片
+            ImageIO.write(flippedImage, "jpg", new File("C:\\Users\\Administrator\\Desktop\\output1.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
