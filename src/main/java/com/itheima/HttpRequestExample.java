@@ -48,6 +48,7 @@ public class HttpRequestExample {
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36");
 
 
+             //-DsocksProxyHost=127.0.0.1 -DsocksProxyPort=7890   关键是 添加虚拟机！！！
             // 获取响应代码
             int responseCode = connection.getResponseCode();
             System.out.println("Response Code: " + responseCode);
