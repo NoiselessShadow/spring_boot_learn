@@ -54,6 +54,18 @@
             <version>1.1.16</version>
         </dependency>
 
+         <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.7.18</version>
+        </dependency>
+
+         <dependency>
+            <groupId>com.apifan.common</groupId>
+            <artifactId>common-random</artifactId>
+            <version>1.0.7</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -66,11 +78,11 @@
             <version>1.16.2</version> <!-- 请替换为实际的最新版本号 -->
         </dependency>
 
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>5.8.15</version> <!-- 请替换为实际的最新版本号 -->
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cn.hutool</groupId>-->
+<!--            <artifactId>hutool-all</artifactId>-->
+<!--            <version>5.8.15</version> &lt;!&ndash; 请替换为实际的最新版本号 &ndash;&gt;-->
+<!--        </dependency>-->
 
 
         <dependency>
