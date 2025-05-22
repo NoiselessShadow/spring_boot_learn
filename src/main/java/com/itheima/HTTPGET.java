@@ -29,11 +29,13 @@ public class HTTPGET {
 
 
     public static void main(String[] args) throws Exception {
-        String  url = "https://www.shuhaige.net/336314/119101866.html";
+//        -DsocksProxyHost=127.0.0.1 -DsocksProxyPort=10808
+        String  url = "https://www.x33yq.org/read/190713/197436945.html";
         List<String> contentList = new ArrayList<>();
 
         int count = 0;
-        contentList = extracted(contentList, url);
+
+        contentList = extracted(contentList, url, count);
         if(ObjectUtil.isNotEmpty(contentList)){
             for (int i = 0; i < 100; i++) {
 //                System.out.println(contentList.get(i));
@@ -41,21 +43,21 @@ public class HTTPGET {
         }
 
         // 文件路径
-        String filePath = "C:\\Users\\Administrator\\Desktop\\testLoad8.txt";
+        String filePath = "C:\\Users\\Administrator\\Desktop\\testLoad8.mrp";
 
         // 调用方法将 List 写入文件
         writeListToFile(contentList, filePath);
 
     }
 
-    private static List<String> extracted(List<String> contentList, String url) throws Exception {
-        String  headUrl = "https://www.shuhaige.net";
+    private static List<String> extracted(List<String> contentList, String url, int count) throws Exception {
+        String  headUrl = "https://www.x33yq.org";
         try {
             SSLContext sslContext = SSLContextBuilder.create().loadTrustMaterial(null, ((x509Certificates, s) -> true)).build();
             SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
             RequestConfig requestConfig = RequestConfig.custom()
-                    .setConnectTimeout(50000)  // 连接超时设置为5秒
-                    .setSocketTimeout(50000)   // 套接字超时设置为5秒
+                    .setConnectTimeout(80000)  // 连接超时设置为5秒
+                    .setSocketTimeout(80000)   // 套接字超时设置为5秒
                     .build();
             CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslConnectionSocketFactory).setDefaultRequestConfig(requestConfig).build();
             HttpGet httpGet = new HttpGet(url);
@@ -91,9 +93,9 @@ public class HTTPGET {
                 contentList.add(content);
             }
             contentList.add("");
-
-//            Element contentDiv = document.select("div#content").first();
 //
+//            Element contentDiv = document.select("div#content").first();
+
 //            if (contentDiv != null) {
 //                // 删除包含 "黄易天地" 的 p 标签
 //                contentDiv.select("p:contains(黄易天地)").remove();
@@ -103,6 +105,8 @@ public class HTTPGET {
 //
 //                // 删除包含 "章节错误" 的 div
 //                contentDiv.select("div").remove();
+//
+//
 //                // 1. 获取原始 HTML 内容
 //                String rawHtml = contentDiv.html();
 //
@@ -128,15 +132,16 @@ public class HTTPGET {
 //
 //                contentList.addAll(paragraphs);
 //                contentList.add("");
-//
-//                // 5. 输出结果
-////                System.out.println("提取段落数: " + paragraphs.size());
-////                for (String para : paragraphs) {
-////                    System.out.println("【段落】\n" + para + "\n");
-////                }
+
+                // 5. 输出结果
+//                System.out.println("提取段落数: " + paragraphs.size());
+//                for (String para : paragraphs) {
+//                    System.out.println("【段落】\n" + para + "\n");
+//                }
 //            }
 
-            if(url.contains("122034352")){
+//            if(url.contains("15151478")){
+            if(url.contains("197437741")){
                 return contentList;
             }
             String href = "";
@@ -160,10 +165,17 @@ public class HTTPGET {
                     break;
                 }
             }
-            extracted(contentList, href);
+            extracted(contentList, href, 0);
         } catch (Exception e) {
+
             e.printStackTrace();
-            return contentList;
+            if(count>3){
+                return contentList;
+            } else {
+                count++;
+                extracted(contentList, url, 0);
+
+            }
 
 //            throw new Exception(e);
 
