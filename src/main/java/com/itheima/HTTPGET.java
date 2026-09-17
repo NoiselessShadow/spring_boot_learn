@@ -34,7 +34,7 @@ public class HTTPGET {
 
     public static void main(String[] args) throws Exception {
 //        -DsocksProxyHost=127.0.0.1 -DsocksProxyPort=10808
-        String  url = "https://www.3kzwvv.com/Lesen/649/649139/23345612.html";
+        String  url = "https://www.novels.com.tw/novels/no13cee6c17094b2f75cdd4f39b6fa87dcbfce017f3911faaaa17cc3036b8606a5/195919222.html";
 //        String  url = "https://look.twword.com/0725520422/8096_30.html";
         List<String> contentList = new ArrayList<>();
 
@@ -57,7 +57,7 @@ public class HTTPGET {
     }
 
     private static List<String> extracted(List<String> contentList, String url, int count,  int  failTime) throws Exception {
-        String  headUrl = "https:";
+        String  headUrl = "https://www.novels.com.tw";
         try {
             SSLContext sslContext = SSLContextBuilder.create().loadTrustMaterial(null, ((x509Certificates, s) -> true)).build();
             SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(sslContext, NoopHostnameVerifier.INSTANCE);
@@ -95,54 +95,54 @@ public class HTTPGET {
 //                title = title.replaceAll("本章未完，点击下一页继续阅读。", "");
 //                title = title.replaceAll("本站所有小说均由网络收集而来,如有侵犯您的权益，请联系我们。", "");
 //                title = title.replaceAll("网站地图", "");
-                title = title.replaceAll("收徒为师真的和你天下第一好楚星尘李应灵百度云_", "");
-                title = title.replaceAll("(楚星尘李应灵)_3K中文网", "");
+//                title = title.replaceAll("收徒为师真的和你天下第一好楚星尘李应灵百度云_", "");
+//                title = title.replaceAll("（免费）西游：这是谁把蟠桃放我办公室的-599小说网", "");
                 System.out.println(title);
 
                 contentList.add(title);
             }
 
-            Elements paragraphs = document.select("p");
-            for (Element paragraph : paragraphs) {
-                String content = paragraph.text();
-
-                if(ObjectUtil.isNotEmpty(content)){
-                    content = content.replaceAll("[§￠%×\\/?\\[\\]\\^\\$&+\\w^.com!:\\\\']", "");
-                    content = content.replaceAll("\\s+", " ").trim();
-                    contentList.add(content);
-                }
-
-            }
+//            Elements paragraphs = document.select("p");
+//            for (Element paragraph : paragraphs) {
+//                String content = paragraph.text();
+//
+//                if(ObjectUtil.isNotEmpty(content)){
+//                    content = content.replaceAll("[§￠%×\\/?\\[\\]\\^\\$&+\\w^.com!:\\\\']", "");
+//                    content = content.replaceAll("\\s+", " ").trim();
+//                    contentList.add(content);
+//                }
+//
+//            }
 //            contentList.add("");
 
 
-            //处理P标签不规范
-            Element contentDiv = document.select("div#content").first();
-            List<TextNode> textNodes = contentDiv.textNodes();
-
-            for (TextNode node : textNodes) {
-                String line = node.text().trim();
-                if (!line.isEmpty()) {
-                    line
-                            // 去掉广告乱码：§?￠齐%?盛/小.×说¨.网¨ 这类
-                            .replaceAll("[§?￠%×¨@#$^&*+\\\\|/\\[\\]~`]", "")
-                            // 去掉网址类广告 wosyw.com 等
-                            .replaceAll("[a-zA-Z0-9]+\\.(com|cn|net)", "")
-                            // 去掉连续乱码符号
-                            .replaceAll("[^\\u4e00-\\u9fa5，。！？；：“”‘’、]", "")
-                            // 多余空格
-                            .trim();
-                    contentList.add(line);
-                }
-            }
-            contentList.add("");
-
-
+//            //处理P标签不规范
+//            Element contentDiv = document.select("div#content").first();
+//            List<TextNode> textNodes = contentDiv.textNodes();
+//
+//            for (TextNode node : textNodes) {
+//                String line = node.text().trim();
+//                if (!line.isEmpty()) {
+//                    line
+//                            // 去掉广告乱码：§?￠齐%?盛/小.×说¨.网¨ 这类
+//                            .replaceAll("[§?￠%×¨@#$^&*+\\\\|/\\[\\]~`]", "")
+//                            // 去掉网址类广告 wosyw.com 等
+//                            .replaceAll("[a-zA-Z0-9]+\\.(com|cn|net)", "")
+//                            // 去掉连续乱码符号
+//                            .replaceAll("[^\\u4e00-\\u9fa5，。！？；：“”‘’、]", "")
+//                            // 多余空格
+//                            .trim();
+//                    contentList.add(line);
+//                }
+//            }
+//            contentList.add("");
 
 
 
-//            //需要解码的
-//            Elements paragraphs = document.select("script");
+
+
+            //需要解码的
+            Elements paragraphs = document.select("script");
 //            for (Element paragraph : paragraphs) {
 //                String content = paragraph.html();
 //
@@ -162,6 +162,49 @@ public class HTTPGET {
 //                    contentList.add(content);
 //                }
 //            }
+
+            for (Element paragraph : paragraphs) {
+                String content = paragraph.html();
+
+                // 1. 修改判断条件：检查是否包含 "encryptedContent"
+                if (content.contains("encryptedContent")) {
+
+                    // 2. 提取双引号之间的 Base64 字符串
+                    // 找到等号的位置
+                    int assignIndex = content.indexOf("=");
+                    if (assignIndex != -1) {
+                        // 找到等号后的第一个双引号
+                        int start = content.indexOf("\"", assignIndex + 1);
+                        // 找到结束的双引号
+                        int end = content.indexOf("\"", start + 1);
+
+                        if (start != -1 && end != -1) {
+                            try {
+                                // 截取中间的字符串
+                                String base64Str = content.substring(start + 1, end);
+
+                                // 3. 【关键步骤】去除转义字符
+                                // 网页源码中的 "cZJ\/S5..." 需要变成 "cZJ/S5..." 才能被标准 Base64 解码器识别
+                                base64Str = base64Str.replace("\\/", "/");
+
+                                // 4. Base64 解码
+                                byte[] decodedBytes = Base64.getDecoder().decode(base64Str);
+                                content = new String(decodedBytes, StandardCharsets.UTF_8);
+
+                                // 5. 清理 HTML 标签（保留你原有的清理逻辑）
+                                content = content.replaceAll("<p>", "");
+                                content = content.replaceAll("</p>", "");
+                                content = content.replaceAll("<br />", "");
+                                content = content.replaceAll("&nbsp;", "");
+
+                                contentList.add(content);
+                            } catch (Exception e) {
+                                System.err.println("解码失败: " + e.getMessage());
+                            }
+                        }
+                    }
+                }
+            }
 
 
 
@@ -216,7 +259,7 @@ public class HTTPGET {
 //////                }
 //            }
 
-            if(url.contains("23345651")){
+            if(url.contains("606a5/195919261")){
                 return contentList;
             }
             String href = "";
@@ -226,12 +269,12 @@ public class HTTPGET {
 //            }
             for (Element paragraph : paragraphs2) {
                 String text = paragraph.text();
-                if("下一章".equals(text)){
+                if("下一章 ".equals(text)){
                     href = paragraph.attr("href"); // 获取<a>标签的href属性的值
                     System.out.println(href); // 打印href属性的值
                     href = headUrl + href;
                     break;
-                } else if ("下一页".equals(text)){
+                } else if (" 下一頁".equals(text)){
                     href = paragraph.attr("href"); // 获取<a>标签的href属性的值
                     System.out.println(href); // 打印href属性的值
                     href = headUrl + href;
